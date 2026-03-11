@@ -168,6 +168,231 @@
             background: rgba(254, 76, 131, 0.1);
         }
 
+        /* --- QUOTES MODAL --- */
+        .quotes-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .quotes-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .quotes-modal {
+            background: rgba(20, 10, 30, 0.9);
+            border: 2px solid rgba(254, 76, 131, 0.6);
+            box-shadow: 0 0 50px rgba(254, 76, 131, 0.4);
+            border-radius: 30px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            padding: 40px 30px;
+            position: relative;
+            transform: translateY(50px) scale(0.9);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .quotes-overlay.active .quotes-modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .quotes-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(254, 76, 131, 0.5);
+            flex-shrink: 0;
+        }
+
+        .quotes-list {
+            overflow-y: auto;
+            text-align: left;
+            padding-right: 15px;
+            flex-grow: 1;
+        }
+
+        .quotes-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .quotes-list::-webkit-scrollbar-thumb {
+            background: rgba(254, 76, 131, 0.5);
+            border-radius: 10px;
+        }
+
+        .quote-item {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 15px;
+            line-height: 1.5;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border-left: 4px solid #fe4c83;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            font-style: italic;
+        }
+
+        /* --- ENVELOPE MODAL (GIFT 4) --- */
+        .envelope-popup {
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            border: 2px solid #fff;
+            box-shadow: 0 15px 50px rgba(254, 76, 131, 0.4);
+            border-radius: 30px;
+            width: 90%;
+            max-width: 500px;
+            height: 400px;
+            padding: 20px;
+            position: relative;
+            transform: translateY(50px) scale(0.9);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .modal-overlay.active .envelope-popup {
+            transform: translateY(0) scale(1);
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: #ff004c;
+            font-size: 24px;
+            animation: floatUp 5s linear forwards;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(400px) scale(0.5) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.8;
+            }
+
+            90% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(-100px) scale(1.5) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .envelope-container {
+            position: relative;
+            width: 280px;
+            height: 200px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin-top: 40px;
+            z-index: 10;
+        }
+
+        .envelope-container:hover {
+            transform: scale(1.05);
+        }
+
+        .envelope-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #e6b881;
+            border-radius: 5px;
+            z-index: 1;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .envelope-card {
+            position: absolute;
+            width: 90%;
+            height: 110%;
+            left: 5%;
+            bottom: 5%;
+            background-color: #fff;
+            background-image: repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px);
+            border-radius: 5px;
+            z-index: 2;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .envelope-container.open .envelope-card {
+            transform: translateY(-130px);
+        }
+
+        .card-image {
+            margin-bottom: 5px;
+        }
+
+        .card-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #4a3b32;
+            text-align: center;
+        }
+
+        .envelope-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            border-left: 140px solid #f6d19f;
+            border-right: 140px solid #f6d19f;
+            border-bottom: 100px solid #ebc28c;
+            border-top: 100px solid transparent;
+            border-radius: 0 0 5px 5px;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-top: 120px solid #dfa55f;
+            z-index: 4;
+            transform-origin: top;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.6s;
+        }
+
+        .envelope-container.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
         /* --- POPUP PLAYER MODAL --- */
         .modal-overlay {
             position: fixed;
@@ -408,17 +633,17 @@
                     <div class="gift-icon">🎁</div>
                     <div class="song-name">Questions</div>
                 </div>
-                <div class="gift-card" onclick="alert('Surprise coming soon!')">
+                <div class="gift-card" onclick="openQuotes()">
                     <div class="gift-name">Gift 3</div>
                     <div class="gift-icon">🎁</div>
-                    <div class="song-name">Mystery</div>
+                    <div class="song-name">Love Quotes</div>
                 </div>
             </div>
             <div class="row">
-                <div class="gift-card" onclick="alert('Surprise coming soon!')">
+                <div class="gift-card" onclick="openEnvelope()">
                     <div class="gift-name">Gift 4</div>
                     <div class="gift-icon">🎁</div>
-                    <div class="song-name">Mystery</div>
+                    <div class="song-name">Surprise</div>
                 </div>
                 <div class="gift-card" onclick="alert('Surprise coming soon!')">
                     <div class="gift-name">Gift 5</div>
@@ -462,6 +687,56 @@
         </div>
     </div>
 
+    <!-- Quotes Modal -->
+    <div class="quotes-overlay" id="quotesModal">
+        <div class="quotes-modal">
+            <div class="close-modal-btn" onclick="closeQuotes()">&times;</div>
+            <div class="quotes-title">Love Quotes</div>
+            <div class="quotes-list">
+                <div class="quote-item">“When I look into your eyes, I see my whole world.”</div>
+                <div class="quote-item">“You are not just my love, you are my happiness.”</div>
+                <div class="quote-item">“Every moment with you is my favorite memory.”</div>
+                <div class="quote-item">“Your smile is the reason my heart feels alive.”</div>
+                <div class="quote-item">“I found my home in your heart.”</div>
+                <div class="quote-item">“You are the most beautiful part of my life.”</div>
+                <div class="quote-item">“If loving you is a dream, I never want to wake up.”</div>
+                <div class="quote-item">“You make my ordinary life feel magical.”</div>
+                <div class="quote-item">“My heart chose you, and it will always choose you.”</div>
+                <div class="quote-item">“With you, every second feels special.”</div>
+                <div class="quote-item">“You are the reason behind my happiest days.”</div>
+                <div class="quote-item">“Your love is the best gift my life has received.”</div>
+                <div class="quote-item">“I fall in love with you more every day.”</div>
+                <div class="quote-item">“Holding your hand feels like holding my whole world.”</div>
+                <div class="quote-item">“Your love makes my life complete.”</div>
+                <div class="quote-item">“You are my favorite person, my favorite place, and my favorite feeling.”</div>
+                <div class="quote-item">“In your arms, I find peace.”</div>
+                <div class="quote-item">“Loving you is the best decision my heart ever made.”</div>
+                <div class="quote-item">“Your love turns my simple moments into beautiful memories.”</div>
+                <div class="quote-item">“No matter where life takes me, I want you beside me.”</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Envelope Modal (Dark overlay matching other popups) -->
+    <div class="modal-overlay" id="envelopeModal">
+        <div class="envelope-popup" id="envelopePopupBox">
+            <div class="close-modal-btn" onclick="closeEnvelope()" style="z-index: 100;">&times;</div>
+
+            <div class="envelope-container" id="envelopeContainer" onclick="toggleEnvelope()">
+                <div class="envelope-back"></div>
+                <div class="envelope-card">
+                    <div class="card-image" style="margin-bottom: 5px;">
+                        <img src="./cute_bunny_bear.png" alt="Cute Bunny and Bear"
+                            style="width: 120px; height: auto; border-radius: 10px; object-fit: contain;">
+                    </div>
+                    <div class="card-text">Place your hand here</div>
+                </div>
+                <div class="envelope-front"></div>
+                <div class="envelope-flap"></div>
+            </div>
+        </div>
+    </div>
+
     <audio id="audio-player"></audio>
 
     <script>
@@ -469,8 +744,8 @@
             { src: "./song1.mp3", title: "Song 1", artist: "Gift 1" },
             { src: "./song2.mp3", title: "Song 2", artist: "Gift 2" },
             { src: "./song3.mp3", title: "Song 3", artist: "Gift 3" },
-            { src: "./song1.mp3", title: "Song 4", artist: "Gift 4" },
-            { src: "./song1.mp3", title: "Song 5", artist: "Gift 5" }
+            { src: "./song4.mp3", title: "Song 4", artist: "Gift 4" },
+            { src: "./song5.mp3", title: "Song 5", artist: "Gift 5" }
         ];
 
         const audioPlayer = document.getElementById('audio-player');
@@ -481,8 +756,58 @@
         const modalArtist = document.getElementById('modalArtist');
         const giftCards = document.querySelectorAll('.gift-card');
 
+        const quotesOverlay = document.getElementById('quotesModal');
+        const envelopeOverlay = document.getElementById('envelopeModal');
+        const envelopeContainer = document.getElementById('envelopeContainer');
+        const envelopePopupBox = document.getElementById('envelopePopupBox');
+
         let currentIndex = -1;
         let isPlaying = false;
+        let heartInterval;
+
+        function openQuotes() {
+            quotesOverlay.classList.add('active');
+        }
+
+        function closeQuotes() {
+            quotesOverlay.classList.remove('active');
+        }
+
+        function openEnvelope() {
+            envelopeOverlay.classList.add('active');
+            createHearts();
+        }
+
+        function closeEnvelope() {
+            envelopeOverlay.classList.remove('active');
+            envelopeContainer.classList.remove('open');
+            clearInterval(heartInterval);
+            const hearts = envelopePopupBox.querySelectorAll('.floating-heart');
+            hearts.forEach(h => h.remove());
+        }
+
+        function toggleEnvelope() {
+            envelopeContainer.classList.toggle('open');
+        }
+
+        function createHearts() {
+            for (let i = 0; i < 3; i++) spawnHeart();
+            heartInterval = setInterval(() => {
+                spawnHeart();
+            }, 800);
+        }
+
+        function spawnHeart() {
+            if (!envelopeOverlay.classList.contains('active')) return;
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = (Math.random() * 80 + 10) + '%';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
+            envelopePopupBox.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 5000);
+        }
 
         function openPlayer(index) {
             modalOverlay.classList.add('active');
