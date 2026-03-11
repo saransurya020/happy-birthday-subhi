@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20 Questions of Love ❤️</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Playfair+Display:ital,wght@1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-glow: #ff00cc;
+            --secondary-glow: #3333ff;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at center, #1a0b2e 0%, #000000 100%);
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Particles Wrapper */
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .header {
+            margin-top: 60px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            background: linear-gradient(to right, #fff, #ffccff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+            text-shadow: 0 5px 15px rgba(255, 0, 204, 0.4);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .single-question-container {
+            width: 90%;
+            max-width: 800px;
+            margin: 40px auto 100px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            z-index: 10;
+        }
+
+        .question-card {
+            background: rgba(20, 20, 35, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            padding: 35px 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.02);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            width: 100%;
+            box-sizing: border-box;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .q-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .q-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-glow);
+            opacity: 0.9;
+            min-width: 70px;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(255, 0, 204, 0.5);
+        }
+
+        .q-text {
+            font-size: 1.4rem;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        /* Options */
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            padding: 20px 25px;
+            border-radius: 15px;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-family: 'Outfit', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-btn:hover {
+            background: rgba(255, 0, 204, 0.1);
+            border-color: rgba(255, 0, 204, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 0, 204, 0.2);
+        }
+
+        .option-btn.selected {
+            background: linear-gradient(135deg, rgba(255, 0, 204, 0.3), rgba(51, 51, 255, 0.3));
+            border-color: rgba(255, 0, 204, 0.8);
+            box-shadow: 0 0 25px rgba(255, 0, 204, 0.3);
+            transform: scale(1.02);
+        }
+
+        /* Popup overlay */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .popup-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .popup-content {
+            background: rgba(20, 20, 35, 0.9);
+            border: 1px solid rgba(255, 0, 204, 0.5);
+            border-radius: 20px;
+            padding: 40px 50px;
+            text-align: center;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 0, 204, 0.2);
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .popup-overlay.active .popup-content {
+            transform: scale(1);
+        }
+
+        .popup-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 0, 204, 0.5);
+        }
+
+        .popup-btn {
+            background: linear-gradient(135deg, #ff00cc, #3333ff);
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(255, 0, 204, 0.3);
+        }
+
+        .popup-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(255, 0, 204, 0.5);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-top: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #3333ff, #ff00cc);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(255, 0, 204, 0.5);
+        }
+
+        /* Buttons */
+        .nav-btn {
+            position: fixed;
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: 0.3s;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-btn {
+            top: 40px;
+            left: 40px;
+        }
+
+        /* Next Button - hidden until finish */
+        .next-btn {
+            bottom: 40px;
+            right: 40px;
+            background: linear-gradient(135deg, rgba(255, 0, 204, 0.2), rgba(51, 51, 255, 0.2));
+            border-color: rgba(255, 0, 204, 0.4);
+            box-shadow: 0 0 20px rgba(255, 0, 204, 0.2);
+            display: none;
+        }
+
+        .next-btn:hover {
+            background: linear-gradient(135deg, rgba(255, 0, 204, 0.4), rgba(51, 51, 255, 0.4));
+            box-shadow: 0 0 30px rgba(255, 0, 204, 0.4);
+        }
+
+        /* Result Screen */
+        .result-container {
+            text-align: center;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .result-score {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            background: linear-gradient(135deg, #ff00cc, #3333ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+            margin: 20px 0;
+            text-shadow: 0 10px 30px rgba(255, 0, 204, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        .result-message {
+            font-size: 1.8rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            line-height: 1.4;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Option Selection Color - Neutral */
+        .option-btn.selected {
+            background: linear-gradient(135deg, rgba(255, 0, 204, 0.3), rgba(51, 51, 255, 0.3));
+            border-color: rgba(255, 0, 204, 0.8);
+            box-shadow: 0 0 25px rgba(255, 0, 204, 0.3);
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .question-card {
+                padding: 25px;
+            }
+
+            .q-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .q-number {
+                font-size: 2.5rem;
+                min-width: auto;
+            }
+
+            .nav-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .back-btn {
+                top: 20px;
+                left: 20px;
+            }
+
+            .next-btn {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .header {
+                margin-top: 80px;
+            }
+
+            .options-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="bgCanvas"></canvas>
+
+    <a href="music.html" class="nav-btn back-btn"><i class="fas fa-arrow-left"></i> Back to Music</a>
+    <a href="Animationindex.html" class="nav-btn next-btn" id="finalNextBtn">Finish <i
+            class="fas fa-arrow-right"></i></a>
+
+    <div class="header">
+        <h1>20 Questions of Love</h1>
+        <div class="subtitle">To deeply connect with you</div>
+    </div>
+
+    <div class="single-question-container" id="questionContainer">
+        <!-- Question will be injected here via JS -->
+    </div>
+
+    <!-- Popup Overlay for Next Question -->
+    <div class="popup-overlay" id="nextPopup">
+        <div class="popup-content">
+            <div class="popup-title">Wonderful response! 💖</div>
+            <button class="popup-btn" onclick="goToNextQuestion()">Next Question <i class="fas fa-arrow-right"
+                    style="margin-left: 8px;"></i></button>
+        </div>
+    </div>
+
+    <script>
+        // Background Animation
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.opacity = Math.random() * 0.5 + 0.1;
+                this.color = Math.random() > 0.5 ? '#ff00cc' : '#3333ff';
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        for (let i = 0; i < 100; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateBg() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateBg);
+        }
+        animateBg();
+
+        // Questions Data - CONFIGURABLE
+        // 'correctIndex' is the index (0-3) of the correct answer in the 'options' array
+        const questions = [
+            {
+                q: "What was your first impression of me?",
+                options: ["You were quiet and mysterious", "You were really funny", "I couldn't stop looking at you", "I thought you were cute but intimidating"],
+                correctIndex: 0
+            },
+            {
+                q: "When did you realize you loved me?",
+                options: ["During our first late-night talk", "When you did that small little caring thing", "A random ordinary day, it just hit me", "I think I always knew"],
+                correctIndex: 1
+            },
+            {
+                q: "What is your absolute favorite memory of us?",
+                options: ["Our first date", "That unexpected trip we took", "Laughing until we cried", "A quiet cozy night in"],
+                correctIndex: 2
+            },
+            {
+                q: "What is one thing I do that always makes you smile?",
+                options: ["The way you look at me", "Your random silly jokes", "When you talk about your passions", "Your sleepy voice"],
+                correctIndex: 1
+            },
+            {
+                q: "If we could go anywhere in the world together right now, where would it be?",
+                options: ["A cozy cabin in the snowy mountains", "A warm sunny beach resort", "Exploring a bustling new city", "A quiet countryside cottage"],
+                correctIndex: 0
+            },
+            {
+                q: "What is your favorite physical feature of mine?",
+                options: ["Your beautiful eyes", "Your warm smile", "Your soft hands", "Your lovely hair"],
+                correctIndex: 0
+            },
+            {
+                q: "What is a small, everyday moment that made you feel deeply loved?",
+                options: ["When you remembered something small I said", "A random comforting hug", "Waking up next to you", "When you checked on me randomly"],
+                correctIndex: 3
+            },
+            {
+                q: "How has our love changed you since we met?",
+                options: ["I'm happier and more positive", "I feel more peaceful and safe", "I've become a better listener", "I see the world differently now"],
+                correctIndex: 0
+            },
+            {
+                q: "What is something you've always wanted to do with me?",
+                options: ["Travel to a dream destination", "Adopt a pet together", "Start a crazy new hobby", "Stay up all night watching stars"],
+                correctIndex: 2
+            },
+            {
+                q: "What song always reminds you of us?",
+                options: ["Our special love song", "The song from our first date", "A random funny song we danced to", "A beautiful instrumental piece"],
+                correctIndex: 0
+            },
+            {
+                q: "What do you think is our greatest strength as a couple?",
+                options: ["Our amazing communication", "How much fun we have together", "Our deep trust in each other", "Our ability to support one another"],
+                correctIndex: 0
+            },
+            {
+                q: "If you had to describe our relationship in three words, what would they be?",
+                options: ["Passionate, Fun, Deep", "Warm, Safe, Beautiful", "Exciting, Loving, Real", "Crazy, Sweet, Forever"],
+                correctIndex: 1
+            },
+            {
+                q: "What is the most romantic thing I've ever done for you?",
+                options: ["A surprise gift or date", "A heartfelt letter/message you wrote", "Being there for me when I was down", "Cooking for me"],
+                correctIndex: 1
+            },
+            {
+                q: "How do you envision our future together?",
+                options: ["Living in a dream home with a family", "Traveling the world nonstop", "Growing old and still laughing together", "Simple, quiet, and peaceful"],
+                correctIndex: 2
+            },
+            {
+                q: "What do you love most about my personality?",
+                options: ["Your brilliant sense of humor", "Your deeply caring nature", "Your ambition and drive", "Your unique quirkiness"],
+                correctIndex: 1
+            },
+            {
+                q: "What is a secret about yourself that you've only shared with me?",
+                options: ["My biggest completely silly fear", "A childhood dream I never told anyone", "My deepest insecurity", "A secret hobby I have"],
+                correctIndex: 2
+            },
+            {
+                q: "What is the best compliment I've ever given you?",
+                options: ["When you praised my appearance", "When you admired my intelligence", "When you said I made you happy", "When you validated my hard work"],
+                correctIndex: 2
+            },
+            {
+                q: "When do you feel the most vulnerable with me, and why?",
+                options: ["When I'm completely honest about my feelings", "When I'm tired or stressed out", "When we share our deep fears", "When we are quiet together"],
+                correctIndex: 0
+            },
+            {
+                q: "What is one thing you promise to always do for our relationship?",
+                options: ["Always communicate openly", "Never stop surprising you", "Always prioritize us", "Stay loyal and true forever"],
+                correctIndex: 2
+            },
+            {
+                q: "Why do you love me?",
+                options: ["Because you understand me perfectly", "Because you make life beautiful", "Because of absolutely everything you are", "Because I can't imagine life without you"],
+                correctIndex: 2
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0; // Track the score
+
+        const container = document.getElementById('questionContainer');
+        const nextPopup = document.getElementById('nextPopup');
+        const finalNextBtn = document.getElementById('finalNextBtn');
+
+        function renderQuestion() {
+            if (currentQuestionIndex >= questions.length) {
+                // Determine message based on score
+                let message = "";
+                if (score >= 18) {
+                    message = "Incredible! You know my heart truly inside and out. ❤️";
+                } else if (score >= 12) {
+                    message = "You know me so well! We share such a beautiful connection. 💕";
+                } else if (score >= 6) {
+                    message = "You got a few, but our love is more about the journey anyway! 💖";
+                } else {
+                    message = "We still have so much to learn about each other, and I love that! 💗";
+                }
+
+                container.innerHTML = `
+                    <div class="question-card result-container">
+                        <h2 style="font-family: 'Playfair Display', serif; font-size: 3rem; color: #fff;">Your Love Score</h2>
+                        <div class="result-score">${score} <span style="font-size: 2rem; color: var(--text-muted); font-family: 'Outfit';">/ ${questions.length}</span></div>
+                        <div class="result-message">${message}</div>
+                        <div style="font-size: 1.1rem; color: var(--text-muted); margin-top: 30px;">Click 'Finish' to complete our journey.</div>
+                    </div>
+                `;
+                finalNextBtn.style.display = 'flex';
+                return;
+            }
+
+            const item = questions[currentQuestionIndex];
+
+            let optionsHTML = '';
+            item.options.forEach((opt, optIndex) => {
+                optionsHTML += `<button class="option-btn" onclick="selectOption(this, ${optIndex}, ${item.correctIndex})">${opt}</button>`;
+            });
+
+            const progressPercentage = ((currentQuestionIndex) / questions.length) * 100;
+
+            container.innerHTML = `
+                <div class="question-card">
+                    <div class="q-header">
+                        <div class="q-number">${(currentQuestionIndex + 1).toString().padStart(2, '0')}</div>
+                        <div class="q-text">${item.q}</div>
+                    </div>
+                    <div class="options-container">
+                        ${optionsHTML}
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: ${progressPercentage}%"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Handle option selection
+        function selectOption(btn, selectedIndex, correctIndex) {
+            const optionsContainer = btn.closest('.options-container');
+            const buttons = optionsContainer.querySelectorAll('.option-btn');
+
+            // Disable all buttons to prevent multiple clicks
+            buttons.forEach(b => {
+                b.style.pointerEvents = 'none';
+            });
+
+            // Highlight the selected option neutrally
+            btn.classList.add('selected');
+
+            // Determine Correctness silently in the background
+            const isCorrect = selectedIndex === correctIndex;
+            if (isCorrect) {
+                score++;
+            }
+
+            // Show popup to go to next question after a brief delay
+            setTimeout(() => {
+                if (currentQuestionIndex === questions.length - 1) {
+                    document.querySelector('.popup-title').innerHTML = "You answered them all! 🎉";
+                    document.querySelector('.popup-btn').innerHTML = "See My Score <i class='fas fa-star'></i>";
+                } else {
+                    document.querySelector('.popup-title').innerHTML = "Answer Recorded! 💖";
+                }
+                nextPopup.classList.add('active');
+            }, 100); // Super fast 100ms delay to show the neutral selection highlight
+        }
+
+        function goToNextQuestion() {
+            nextPopup.classList.remove('active');
+            currentQuestionIndex++;
+            setTimeout(() => {
+                renderQuestion();
+            }, 150); // Faster fade out time before rendering
+        }
+
+        // Initial render
+        renderQuestion();
+    </script>
+</body>
+
+</html>
