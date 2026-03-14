@@ -1063,6 +1063,7 @@
         function closePlayer() {
             modalOverlay.classList.remove('active');
             pauseSong();
+            if (audioPlayer) audioPlayer.currentTime = 0;
         }
 
         function loadSongContext(index) {
