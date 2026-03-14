@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Ultimate Magic 💖</title>
+    <!-- Premium Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #050112;
+            overflow: hidden;
+            font-family: 'Montserrat', sans-serif;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* DYNAMIC TWINKLING BACKGROUND */
+        #starCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+            background: radial-gradient(circle at center, #1b0c36 0%, #050112 100%);
+        }
+
+        /* GLOWING HEART BUTTON */
+        .heart-container {
+            position: absolute;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, opacity 1s ease;
+        }
+
+        .heart {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, #ff0844 0%, #ff5e92 100%);
+            box-shadow: 0 0 50px #ff0844, 0 0 100px #ff0844, inset 0 0 20px #fff;
+            animation: pulse-heart 1.5s infinite;
+            transform: rotate(-45deg);
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: inherit;
+            border-radius: 50%;
+            box-shadow: inherit;
+        }
+
+        .heart::before {
+            top: -75px;
+            left: 0;
+        }
+
+        .heart::after {
+            top: 0;
+            left: 75px;
+        }
+
+        @keyframes pulse-heart {
+            0% {
+                transform: rotate(-45deg) scale(0.9);
+                box-shadow: 0 0 40px #ff0844;
+            }
+
+            50% {
+                transform: rotate(-45deg) scale(1.1);
+                box-shadow: 0 0 80px #ff0844, 0 0 150px #ff5e92;
+            }
+
+            100% {
+                transform: rotate(-45deg) scale(0.9);
+                box-shadow: 0 0 40px #ff0844;
+            }
+        }
+
+        .click-text {
+            margin-top: 100px;
+            font-size: 1.5rem;
+            color: #ff9a9e;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px #ff5e92;
+            animation: fade-text 2s infinite;
+        }
+
+        @keyframes fade-text {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .heart-container:hover .heart {
+            animation: none;
+            transform: rotate(-45deg) scale(1.15);
+            box-shadow: 0 0 100px #ff0844, 0 0 200px #fff;
+        }
+
+        /* FINAL MAGICAL REVEAL - GLASS CARD */
+        .reveal-wrapper {
+            position: absolute;
+            z-index: 20;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.8) translateY(50px);
+            transition: all 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 90%;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        .reveal-wrapper.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 60px 40px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 0 30px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            animation: float-panel 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes float-panel {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(-15px) rotate(1deg);
+            }
+        }
+
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 8, 68, 0.2), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .magic-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 5rem;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(255, 154, 158, 0.5);
+            line-height: 1.2;
+        }
+
+        .magic-text {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: #ececec;
+            font-weight: 300;
+            margin-bottom: 40px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .magic-highlight {
+            display: block;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #ffd700;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            margin-top: 25px;
+            text-transform: uppercase;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn-magic {
+            background: linear-gradient(135deg, #ff0844, #ffb199);
+            color: #fff;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            box-shadow: 0 10px 30px rgba(255, 8, 68, 0.5);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .btn-magic:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 8, 68, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            border-color: #fff;
+        }
+
+        /* BACK BUTTON */
+        .top-back {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            z-index: 50;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.8rem;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .top-back:hover {
+            color: #ff9a9e;
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 600px) {
+            .magic-title {
+                font-size: 3.5rem;
+            }
+
+            .magic-text {
+                font-size: 1.1rem;
+            }
+
+            .glass-panel {
+                padding: 40px 20px;
+            }
+
+            .heart {
+                width: 100px;
+                height: 100px;
+            }
+
+            .heart::before,
+            .heart::after {
+                width: 100px;
+                height: 100px;
+            }
+
+            .heart::before {
+                top: -50px;
+            }
+
+            .heart::after {
+                left: 50px;
+            }
+
+            .click-text {
+                margin-top: 70px;
+                font-size: 1.2rem;
+            }
+
+            .btn-group {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <a href="music.html" class="top-back"><i class="fas fa-arrow-left"></i></a>
+
+    <!-- Twinkling Star Background -->
+    <canvas id="starCanvas"></canvas>
+
+    <!-- Glowing Heart Entrance -->
+    <div class="heart-container" id="heartBox" onclick="shatterHeart()">
+        <div class="heart"></div>
+        <div class="click-text">Touch My Heart</div>
+    </div>
+
+    <!-- The Magical Reveal -->
+    <div class="reveal-wrapper" id="revealBox">
+        <div class="glass-panel">
+            <h1 class="magic-title">My Beautiful Subhi...</h1>
+            <p class="magic-text">
+                Every line of code and every glowing light was crafted just to see your beautiful smile. A generic gift
+                could never hold how truly deeply I cherish you.<br><br>
+                Thank you for making my life a masterpiece. You are my absolute everything.
+            </p>
+            <span class="magic-highlight">Happy Birthday My Love 💖</span>
+            <br><br>
+            <div class="btn-group">
+                <!--<a href="cake.html" class="btn-magic">Cut the Cake 🎂</a>-->
+                <a href="index.html" class="btn-secondary">Restart Magic ✨</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include GSAP and Canvas Confetti -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+    <script>
+        // --- STAR BACKGROUND RENDERING ---
+        const canvas = document.getElementById('starCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let stars = [];
+
+        class Star {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.baseAlpha = Math.random() * 0.5 + 0.1;
+                this.alpha = this.baseAlpha;
+                this.fadeRate = Math.random() * 0.02 + 0.01;
+                this.fadingIn = Math.random() > 0.5;
+            }
+
+            draw() {
+                if (this.fadingIn) {
+                    this.alpha += this.fadeRate;
+                    if (this.alpha >= 1) this.fadingIn = false;
+                } else {
+                    this.alpha -= this.fadeRate;
+                    if (this.alpha <= this.baseAlpha) this.fadingIn = true;
+                }
+
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 200; i++) {
+            stars.push(new Star());
+        }
+
+        function animateStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(star => star.draw());
+            requestAnimationFrame(animateStars);
+        }
+        animateStars();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            stars = [];
+            for (let i = 0; i < 200; i++) stars.push(new Star());
+        });
+
+        // --- INTERACTION: EXLPODE AND REVEAL ---
+        function shatterHeart() {
+            const heartBox = document.getElementById('heartBox');
+            const revealBox = document.getElementById('revealBox');
+
+            // Play a magical shatter animation on the heart
+            gsap.to(heartBox, {
+                scale: 3,
+                opacity: 0,
+                duration: 0.8,
+                ease: "power2.inOut",
+                onComplete: () => {
+                    heartBox.style.display = 'none';
+
+                    // Show Glass card
+                    revealBox.classList.add('active');
+
+                    // Fire Confetti Explosion!
+                    fireConfetti();
+                }
+            });
+        }
+
+        function fireConfetti() {
+            var duration = 5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 40, spread: 360, ticks: 100, zIndex: 15000 };
+
+            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+            var interval = setInterval(function () {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 60 * (timeLeft / duration);
+
+                // Explode from the middle outwards
+                confetti(Object.assign({}, defaults, {
+                    particleCount,
+                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+                    colors: ['#ff0844', '#ffb199', '#ffffff', '#ffd700']
+                }));
+                confetti(Object.assign({}, defaults, {
+                    particleCount,
+                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+                    colors: ['#ff0844', '#ffb199', '#ffffff', '#ffd700']
+                }));
+            }, 250);
+        }
+    </script>
+</body>
+
+</html>
